@@ -2,4 +2,8 @@
 <resources>
     <string name="action_settings">Paramètres</string>
     <string name="action_refresh">Rafraîchir</string>
+    <string name="title_activity_settings">Paramètres</string>
+    <string name="location">Emplacement</string>
+    <string name="unit">Unité</string>
+    <string name="preferred_location_menu">Emplacement préféré</string>
 </resources>

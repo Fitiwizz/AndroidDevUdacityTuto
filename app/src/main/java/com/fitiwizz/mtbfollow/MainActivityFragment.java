@@ -1,7 +1,10 @@
 package com.fitiwizz.mtbfollow;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.format.Time;
@@ -13,9 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,11 +40,11 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ActivitiesFragment extends Fragment {
+public class MainActivityFragment extends Fragment {
 
     private ArrayAdapter<String> mActivityAdapter;
 
-    public ActivitiesFragment() {
+    public MainActivityFragment() {
     }
 
     @Override
@@ -47,6 +52,12 @@ public class ActivitiesFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateData();
     }
 
     @Override
@@ -59,38 +70,58 @@ public class ActivitiesFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_refresh) {
-            FetchDataTask fetchTask = new FetchDataTask();
-            fetchTask.execute("eguilles,fr", "json", "metric", "7");
+            updateData();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateData() {
+        FetchDataTask fetchTask = new FetchDataTask();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        String location = prefs.getString(getString(R.string.locationKey), getString(R.string.locationDefault));
+        String unit     = prefs.getString(getString(R.string.unitKey), getString(R.string.unitDefault));
+
+        fetchTask.execute(location, "json", unit, "7");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        String[] data = {
-                "kikoo",
-                "lol",
-                "plop",
-                "encore",
-                "encore"
-        };
-
-        List<String> allActivities = new ArrayList<String>(Arrays.asList(data));
-
         mActivityAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 R.layout.list_item_activities,
                 R.id.list_item_activities_textview,
-                allActivities
+                new ArrayList<String>()
         );
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview_activities);
         listView.setAdapter(mActivityAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String itemText = mActivityAdapter.getItem(position);
+
+                /**
+                 *     Toast :
+                 * int duration = Toast.LENGTH_SHORT;
+                 * Toast toast = Toast.makeText(getActivity(), itemText, duration);
+                 * toast.show();
+                 */
+
+                Intent intent = new Intent(getActivity(), DetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, itemText);
+
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }

@@ -40,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         } else if (id == R.id.preferred_location_settings) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            String location = prefs.getString(getString(R.string.locationKey), getString(R.string.locationDefault));
+            String location = Utility.getPreferredLocation(this);
             String uri = "geo:0,0?q=" + location;
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
 
@@ -50,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Log.d("WOOOOOPS", "Cannot open map !");
             }
-
 //            intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
             startActivity(intent);
             return true;

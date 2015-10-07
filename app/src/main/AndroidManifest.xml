@@ -38,6 +38,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.fitiwizz.mtbfollow.MainActivity" />
         </activity>
+
+        <provider
+            android:authorities="com.fitiwizz.mtbfollow.app"
+            android:name=".data.WeatherProvider"
+            />
     </application>
 
 </manifest>

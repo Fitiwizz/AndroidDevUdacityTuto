@@ -27,7 +27,7 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
+public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
 
     private static final int FORECAST_LOADER = 0;
@@ -66,7 +66,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private ForecastAdapter mForecastAdapter;
 
-    public MainActivityFragment() {
+    public ForecastFragment() {
     }
 
     @Override

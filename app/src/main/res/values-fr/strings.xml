@@ -6,4 +6,6 @@
     <string name="location">Emplacement</string>
     <string name="unit">Unité</string>
     <string name="preferred_location_menu">Emplacement préféré</string>
+    <string name="today">Aujourd\'hui</string>
+    <string name="tomorrow">Demain</string>
 </resources>
